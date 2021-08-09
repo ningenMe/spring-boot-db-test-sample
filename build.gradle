@@ -16,6 +16,9 @@ repositories {
 dependencies {
 	//spring-boot
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	//mysql
 	implementation 'mysql:mysql-connector-java:8.0.21'
 	//mybatis
@@ -24,12 +27,19 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//dbunit
 	testImplementation 'org.dbunit:dbunit:2.7.2'
+	//groovy
+	testImplementation "org.spockframework:spock-spring:2.0-groovy-3.0"
+	testImplementation "org.spockframework:spock-core:2.0-groovy-3.0"
+	testImplementation "org.codehaus.groovy:groovy-all:3.0.8"
+	//junit
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
 }
 
 task dockerComposeUp (type: Exec) {
 	commandLine 'docker-compose','-f','src/test/resources/docker-compose.yaml','up','-d'
 	doLast {
-		Thread.sleep(5 * 1000) //5secまつ
+		Thread.sleep(5 * 1000) //5sec
 	}
 }
 
