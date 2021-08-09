@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ningenme
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
