@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'groovy'
 }
 
 group = 'ningenme.net'
@@ -13,11 +14,40 @@ repositories {
 }
 
 dependencies {
+	//spring-boot
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	//mysql
+	implementation 'mysql:mysql-connector-java:8.0.21'
+	//mybatis
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.0'
+	//spring-boot-test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//dbunit
+	testImplementation 'org.dbunit:dbunit:2.7.2'
+	//groovy
+	testImplementation "org.spockframework:spock-spring:2.0-groovy-3.0"
+	testImplementation "org.spockframework:spock-core:2.0-groovy-3.0"
+	testImplementation "org.codehaus.groovy:groovy-all:3.0.8"
+	//junit
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
+}
+
+task dockerComposeUp (type: Exec) {
+	commandLine 'docker-compose','-f','src/test/resources/docker-compose.yaml','up','-d'
+	doLast {
+		Thread.sleep(5 * 1000) //5sec
+	}
+}
+
+task dockerComposeDown (type: Exec) {
+	commandLine 'docker-compose', '-f', 'src/test/resources/docker-compose.yaml', 'down', '--remove-orphans', '--volumes'
 }
 
 test {
 	useJUnitPlatform()
+	dependsOn(dockerComposeUp)
 }
