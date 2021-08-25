@@ -50,4 +50,5 @@ task dockerComposeDown (type: Exec) {
 test {
 	useJUnitPlatform()
 	dependsOn(dockerComposeUp)
+	finalizedBy(dockerComposeDown)
 }
